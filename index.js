@@ -1,9 +1,19 @@
 const express = require('express');
+const { PORT } = require('./config');
+const database = require('./config/database')
+const expressConfig = require('./config/express');
 
-const app = express();
+start();
 
-app.get('/', (req, res) => {
-    res.send('It works');
-})
+async function start() {
+    const app = express();
 
-app.listen(3000);
+    await database(app);
+    expressConfig(app);
+    
+    app.get('/', (req, res) => {
+        res.send('It works');
+    })
+
+    app.listen(PORT, () => console.log(`App started on htpp://localhost/${PORT}`));
+}
