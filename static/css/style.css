@@ -285,7 +285,7 @@ footer {
 }
 
 .added-hotels {
-    display: flex;
+    display: inline-flex;
     justify-content: space-around;
     flex-wrap: wrap;
 }
