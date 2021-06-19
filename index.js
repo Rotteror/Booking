@@ -2,6 +2,7 @@ const express = require('express');
 const { PORT } = require('./config');
 const database = require('./config/database')
 const expressConfig = require('./config/express');
+const routesConfig = require('./config/routes');
 
 start();
 
@@ -10,10 +11,9 @@ async function start() {
 
     await database(app);
     expressConfig(app);
-    
-    app.get('/', (req, res) => {
-        res.send('It works');
-    })
+
+    routesConfig(app);
+
 
     app.listen(PORT, () => console.log(`App started on htpp://localhost/${PORT}`));
 }
