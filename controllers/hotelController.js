@@ -1,4 +1,5 @@
-const { isUser } = require('../middlewares/guards');
+const { isUser, isOwner } = require('../middlewares/guards');
+const { preloadHotel } = require('../middlewares/preloads');
 
 const router = require('express').Router();
 
@@ -37,6 +38,21 @@ router.post('/create', isUser(), async (req, res) => {
         }
         console.log(ctx.hotelData)
         res.render('hotel/create', ctx)
+    }
+})
+
+router.get('/details/:id', preloadHotel(), isOwner(), async (req, res) => {
+    const hotel = req.data.hotel;
+    console.log(hotel)
+    if (hotel == undefined) {
+        res.redirect('/404');
+    } else {
+        // hotel.isOwner = req.user && (hotel.ownerId == req.user._id);
+        const ctx = {
+            title: 'Hotel',
+            hotel
+        }
+        res.render('hotel/details', ctx)
     }
 })
 
