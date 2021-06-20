@@ -29,15 +29,17 @@ async function editHotel(id, hotel) {
 }
 
 async function bookHotel(hotelId, userId) {
-    console.log('in service')
+    
     const currentHotel = await Hotel.findById(hotelId);
     const user = await User.findById(userId);
 
-    if(!currentHotel && !user){
+    if (!currentHotel && !user) {
         throw new Error('No such hotel or user in DB ');
     }
+    if (currentHotel.bookedBy.includes(userId)) {
+        throw new Error('You already booked this hotel')
+    }
 
-    console.log(currentHotel)
     currentHotel.bookedBy.push(userId);
     return currentHotel.save();
 }
