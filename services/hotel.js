@@ -17,8 +17,21 @@ async function getHotelById(id) {
     return hotel;
 }
 
+async function editHotel(id, hotel) {
+    const currentHotel = await Hotel.findById(id);
+
+    if (!currentHotel) {
+        throw new Error('No such Hotel in DB');
+    }
+    Object.assign(currentHotel, hotel);
+    return currentHotel.save();
+}
+
+
+
 module.exports = {
     createHotel,
     getAllHotels,
     getHotelById,
+    editHotel,
 }

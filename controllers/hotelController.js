@@ -41,19 +41,52 @@ router.post('/create', isUser(), async (req, res) => {
     }
 })
 
-router.get('/details/:id', preloadHotel(), isOwner(), async (req, res) => {
+router.get('/details/:id', preloadHotel(), async (req, res) => {
     const hotel = req.data.hotel;
-    console.log(hotel)
     if (hotel == undefined) {
         res.redirect('/404');
     } else {
-        // hotel.isOwner = req.user && (hotel.ownerId == req.user._id);
+        hotel.isOwner = req.user && (hotel.owner == req.user._id);
+        hotel.isBooked = req.data.hotel.bookedBy.includes(req.user._id);
         const ctx = {
-            title: 'Hotel',
+            title: `Hotel ${hotel.name}`,
             hotel
         }
         res.render('hotel/details', ctx)
     }
+});
+
+router.get('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
+    const hotel = req.data.hotel;
+    if (!hotel) {
+        res.redirect('/');
+    } else {
+        const ctx = {
+            title: 'Edit Hotel',
+            hotel,
+        };
+        res.render('hotel/edit', ctx);
+    }
+});
+
+
+router.post('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
+    const hotel = {
+        name: req.body.name,
+        city: req.body.city,
+        rooms: Number(req.body.rooms),
+        imageUrl: req.body.imageUrl,
+    }
+    console.log(req.params.id)
+    try {
+        console.log(req.storage)
+        await req.storage.editHotel(req.params.id, hotel);
+        res.redirect('/');
+    } catch (err) {
+        console.log('im here')
+        res.redirect('404');
+    }
+    console.log(hotel)
 })
 
 module.exports = router;

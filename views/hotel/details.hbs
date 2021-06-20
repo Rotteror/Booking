@@ -1,5 +1,6 @@
 <section id="viewhotelDetails">
     <h2>Details</h2>
+    {{#with hotel}}
     <div class="hotel-ticket">
         <div class="hotel-left">
             <img src="{{imageUrl}}" alt="">
@@ -12,14 +13,18 @@
                 {{city}}
             </div>
             <p><span>Free rooms: {{rooms}}</span> </p>
-            <p><span class="green">You already have booked a room</span> </p>
 
-            <a href="/hotel/booking" class="book">Book</a>
             {{#if isOwner}}
-            <a href="hotels/edit/:id" class="edit">Edit</a>
-            <a href="hotels/delete" class="remove">Delete</a>
+            <a href="/hotels/edit/{{_id}}" class="edit">Edit</a>
+            <a href="/hotels/delete/{{_id}}" class="remove">Delete</a>
+            {{else}}
+            {{#if isBooked}}
+            <p><span class="green">You already have booked a room</span> </p>
+            {{else}}
+            <a href="/hotel/booking" class="book">Book</a>
+            {{/if}}
             {{/if}}
         </div>
-
     </div>
+    {{/with}}
 </section>
