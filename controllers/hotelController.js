@@ -36,7 +36,6 @@ router.post('/create', isUser(), async (req, res) => {
                 imageUrl: req.body.imageUrl,
             }
         }
-        console.log(ctx.hotelData)
         res.render('hotel/create', ctx)
     }
 })
@@ -77,16 +76,23 @@ router.post('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
         rooms: Number(req.body.rooms),
         imageUrl: req.body.imageUrl,
     }
-    console.log(req.params.id)
     try {
-        console.log(req.storage)
         await req.storage.editHotel(req.params.id, hotel);
         res.redirect('/');
     } catch (err) {
-        console.log('im here')
-        res.redirect('404');
+        res.redirect('/404');
     }
-    console.log(hotel)
+});
+
+router.post('/details/book/:id', async (req, res) => {
+
+    console.log('in controller')
+    const hotelId = req.params.id;
+    const userId = req.user._id;
+
+        await req.storage.bookHotel(hotelId, userId);
+        res.redirect(`/details/${hotelId}`);
+ 
 })
 
 module.exports = router;

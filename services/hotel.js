@@ -1,4 +1,5 @@
 const Hotel = require('../models/Hotel');
+const User = require('../models/User');
 
 async function createHotel(hotelData) {
     const hotel = new Hotel(hotelData);
@@ -27,6 +28,20 @@ async function editHotel(id, hotel) {
     return currentHotel.save();
 }
 
+async function bookHotel(hotelId, userId) {
+    console.log('in service')
+    const currentHotel = await Hotel.findById(hotelId);
+    const user = await User.findById(userId);
+
+    if(!currentHotel && !user){
+        throw new Error('No such hotel or user in DB ');
+    }
+
+    console.log(currentHotel)
+    currentHotel.bookedBy.push(userId);
+    return currentHotel.save();
+}
+
 
 
 module.exports = {
@@ -34,4 +49,5 @@ module.exports = {
     getAllHotels,
     getHotelById,
     editHotel,
+    bookHotel,
 }
