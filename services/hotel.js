@@ -29,7 +29,7 @@ async function editHotel(id, hotel) {
 }
 
 async function bookHotel(hotelId, userId) {
-    
+
     const currentHotel = await Hotel.findById(hotelId);
     const user = await User.findById(userId);
 
@@ -44,6 +44,14 @@ async function bookHotel(hotelId, userId) {
     return currentHotel.save();
 }
 
+async function deleteHotel(hotelId) {
+    const hotel = await Hotel.findById(hotelId);
+    if (!hotel) {
+        throw new Error('No such hotel in DB ');
+    }
+    return hotel.remove();
+}
+
 
 
 module.exports = {
@@ -52,4 +60,5 @@ module.exports = {
     getHotelById,
     editHotel,
     bookHotel,
+    deleteHotel,
 }

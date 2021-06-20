@@ -47,10 +47,10 @@ router.get('/details/:id', preloadHotel(), async (req, res) => {
     } else {
         hotel.isOwner = req.user && (hotel.owner == req.user._id);
         hotel.isBooked = req.data.hotel.bookedBy.some(e => e.objectId == req.user_id);
-      
+
         console.log(req.user._id)
         console.log(hotel)
-        
+
         const ctx = {
             title: `Hotel ${hotel.name}`,
             hotel
@@ -102,6 +102,12 @@ router.get('/book/:id', async (req, res) => {
         res.redirect(`/hotels/details/${hotelId}`);
     }
 
+})
+
+router.get('/delete/:id', async (req, res) => {
+
+    await req.storage.deleteHotel(req.params.id);
+    res.redirect('/')
 })
 
 module.exports = router;
