@@ -84,7 +84,13 @@ router.post('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
         await req.storage.editHotel(req.params.id, hotel);
         res.redirect('/');
     } catch (err) {
-        res.redirect('/404');
+        console.log(err.message)
+        const ctx = {
+            errors: [err.message],
+            hotel
+        }
+        res.render('hotel/edit', ctx)
+        
     }
 });
 
