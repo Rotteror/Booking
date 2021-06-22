@@ -53,6 +53,15 @@ async function deleteHotel(hotelId) {
     return hotel.remove();
 }
 
+async function getAllBookedHotelsForUser(hotelsId) {
+    let arrHotelName = [];
+    while (hotelsId.length > 0) {
+        const currentHotel = await Hotel.findById(hotelsId.shift())
+        arrHotelName.push(currentHotel.name);
+    }
+    return arrHotelName;
+}
+
 
 
 module.exports = {
@@ -62,4 +71,5 @@ module.exports = {
     editHotel,
     bookHotel,
     deleteHotel,
+    getAllBookedHotelsForUser,
 }

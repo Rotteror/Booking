@@ -28,6 +28,8 @@ async function getUserByEmail(email) {
     return user;
 }
 
+
+
 module.exports = {
     createUser,
     getUserByUsername,
