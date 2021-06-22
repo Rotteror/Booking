@@ -40,6 +40,8 @@ async function bookHotel(hotelId, userId) {
         throw new Error('You already booked this hotel')
     }
 
+    //TO DO decrease rooms after booking if rooms become equal to 1 , no booking available !!! 
+    currentHotel.rooms = currentHotel.rooms - 1;
     currentHotel.bookedBy.push(user);
     user.bookedHotels.push(currentHotel)
     return Promise.all([(currentHotel.save(), user.save())]);
