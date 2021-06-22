@@ -5,7 +5,8 @@ async function createUser(username, email, hashedPassword) {
     const user = new User({
         username,
         email,
-        hashedPassword
+        hashedPassword,
+        bookedHotels: [],
     });
 
     await user.save();

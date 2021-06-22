@@ -48,9 +48,6 @@ router.get('/details/:id', preloadHotel(), async (req, res) => {
         hotel.isOwner = req.user && (hotel.owner == req.user._id);
         hotel.isBooked = req.data.hotel.bookedBy.some(e => e.objectId == req.user_id);
 
-        console.log(req.user._id)
-        console.log(hotel)
-
         const ctx = {
             title: `Hotel ${hotel.name}`,
             hotel
@@ -84,19 +81,17 @@ router.post('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
         await req.storage.editHotel(req.params.id, hotel);
         res.redirect('/');
     } catch (err) {
-        console.log(err.message)
         const ctx = {
             errors: [err.message],
             hotel
         }
-        res.render('hotel/edit', ctx)
-        
+        res.render(`hotel/edit`, ctx)
     }
 });
 
 router.get('/book/:id', async (req, res) => {
 
-    console.log('in controller')
+
     const hotelId = req.params.id;
     const userId = req.user._id;
     try {

@@ -40,8 +40,9 @@ async function bookHotel(hotelId, userId) {
         throw new Error('You already booked this hotel')
     }
 
-    currentHotel.bookedBy.push(userId);
-    return currentHotel.save();
+    currentHotel.bookedBy.push(user);
+    user.bookedHotels.push(currentHotel)
+    return Promise.all([(currentHotel.save(), user.save())]);
 }
 
 async function deleteHotel(hotelId) {
