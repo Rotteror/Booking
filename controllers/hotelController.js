@@ -71,16 +71,24 @@ router.get('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
 
 
 router.post('/edit/:id', preloadHotel(), isOwner(), async (req, res) => {
-    const hotel = {
-        name: req.body.name,
-        city: req.body.city,
-        rooms: Number(req.body.rooms),
-        imageUrl: req.body.imageUrl,
-    }
+
     try {
+        const hotel = {
+            name: req.body.name,
+            city: req.body.city,
+            rooms: Number(req.body.rooms),
+            imageUrl: req.body.imageUrl,
+        }
         await req.storage.editHotel(req.params.id, hotel);
         res.redirect('/');
     } catch (err) {
+        console.log(err.message)
+        const hotel = {
+            name: req.body.name,
+            city: req.body.city,
+            rooms: Number(req.body.rooms),
+            imageUrl: req.body.imageUrl,
+        }
         const ctx = {
             errors: [err.message],
             hotel
